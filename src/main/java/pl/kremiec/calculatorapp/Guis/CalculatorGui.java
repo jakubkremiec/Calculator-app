@@ -10,20 +10,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route
 public class CalculatorGui extends VerticalLayout {
 
-    TextArea textArea;
+    TextField firstNumberField;
+    TextField secondNumberField;
+    TextArea resultField;
     Button button;
 
     @Autowired
     CalculatorGui(){
 
-        textArea = new TextArea();
-        button = new Button("Click");
+        addFields();
 
-        button.addClickListener(buttonClickEvent -> textArea.setValue("test value 123\nsecond line"));
+        button.addClickListener(buttonClickEvent ->
+                allCombinations(Double.parseDouble(firstNumberField.getValue()),Double.parseDouble(secondNumberField.getValue())));
 
-        add(textArea);
+
+
+    }
+
+    public void addFields(){
+        firstNumberField = new TextField("First number");
+        secondNumberField = new TextField("Second number");
+        resultField = new TextArea("Result");
+        resultField.setWidth("75%");
+        button = new Button("Click!");
+
+        add(firstNumberField);
+        add(secondNumberField);
+        add(resultField);
         add(button);
+    }
 
+    public void allCombinations(double a, double b){
+
+        String result = String.format("%.2f + %.2f = %.2f\n",a,b,a+b) +
+                        String.format("%.2f - %.2f = %.2f\n",a,b,a-b) +
+                        String.format("%.2f * %.2f = %.2f\n",a,b,a*b) +
+                        String.format("%.2f / %.2f = %.2f",a,b,a/b);
+
+        resultField.setValue(result);
 
     }
 }
